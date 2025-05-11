@@ -16,10 +16,12 @@ class App {
   }
 
   #setupDrawer() {
-    this.#drawerButton.addEventListener("click", () => {
+    this.#drawerButton.addEventListener("click", (event) => {
+      event.stopPropagation();
       this.#navigationDrawer.classList.toggle("open");
     });
 
+    // Tutup drawer jika klik di luar drawer
     document.body.addEventListener("click", (event) => {
       if (
         !this.#navigationDrawer.contains(event.target) &&
@@ -85,5 +87,11 @@ class App {
       });
   }
 }
+
+const app = new App({
+  content: document.querySelector("#main-content"),
+  drawerButton: document.querySelector("#drawer-button"),
+  navigationDrawer: document.querySelector("#navigation-drawer"),
+});
 
 export default App;
