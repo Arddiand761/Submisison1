@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Inisialisasi App
   const app = new App({
-    content: mainContent,
+    content: document.querySelector("#main-content"),
     drawerButton: document.querySelector("#drawer-button"),
     navigationDrawer: document.querySelector("#navigation-drawer"),
   });

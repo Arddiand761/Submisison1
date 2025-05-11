@@ -6,7 +6,6 @@ class App {
   #content = null;
   #drawerButton = null;
   #navigationDrawer = null;
-  #isTrasitioning = false;
 
   constructor({ navigationDrawer, drawerButton, content }) {
     this.#content = content;
@@ -28,12 +27,6 @@ class App {
       ) {
         this.#navigationDrawer.classList.remove("open");
       }
-
-      this.#navigationDrawer.querySelectorAll("a").forEach((link) => {
-        if (link.contains(event.target)) {
-          this.#navigationDrawer.classList.remove("open");
-        }
-      });
     });
   }
 

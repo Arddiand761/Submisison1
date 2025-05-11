@@ -10,11 +10,11 @@
   --primary-text-color: #ffffff;
   --primary-hover-color: #b66200;
   --primary-shadow-color: #d97706aa;
- 
+
   --secondary-color: #6c757d;
   --secondary-text-color: #ffffff;
 }
- 
+
 /* View Transition API custom animation */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -58,7 +58,7 @@
 body {
   display: flex;
   flex-direction: column;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   min-height: 100vh;
 }
 
@@ -138,6 +138,11 @@ header {
 .navigation-drawer {
   display: flex;
   transition: all 0.3s ease;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.navigation-drawer.open {
+  transform: translateX(0);
 }
 
 .nav-list {
@@ -163,7 +168,7 @@ header {
 }
 
 .nav-list li a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -176,7 +181,6 @@ header {
 .nav-list li a:hover::after {
   width: 100%;
 }
-
 
 .logout-button {
   display: flex;
@@ -387,7 +391,6 @@ header {
   font-size: 1.2rem;
 }
 
-
 /*Register Page */
 .auth-container {
   max-width: 400px;
@@ -445,7 +448,6 @@ header {
 .auth-link a:hover {
   text-decoration: underline;
 }
-
 
 /* View Transitions */
 ::view-transition-old(page-container),
@@ -514,7 +516,7 @@ header {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* MAIN */
@@ -574,7 +576,7 @@ header {
 }
 
 .card-location::before {
-  content: '📍';
+  content: "📍";
   margin-right: 5px;
 }
 
