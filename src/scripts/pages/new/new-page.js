@@ -81,6 +81,7 @@ export default class NewPage {
             <label>Location (Required)</label>
             <div id="map" class="map-container"></div>
             <p id="selected-location" class="selected-location">Click on map to select location</p>
+            <button type="button" id="detect-location" class="button">Gunakan Lokasi Saya</button>
           </div>
 
           <button type="submit" class="submit-button">Create Story</button>
@@ -126,7 +127,6 @@ export default class NewPage {
       console.error("Error initializing map:", error);
     }
 
-
     const toggleCameraBtn = document.getElementById("toggle-camera");
     const cameraSection = document.getElementById("camera-section");
     const cameraPreview = document.getElementById("camera-preview");
@@ -135,8 +135,7 @@ export default class NewPage {
     const closeCameraBtn = document.getElementById("close-camera");
     const photoPreview = document.getElementById("photo-preview");
     const photoInput = document.getElementById("photo-input");
-    const confirmPhotoBtn = document.getElementById('confirm-photo');
-
+    const confirmPhotoBtn = document.getElementById("confirm-photo");
 
     // Helper function to stop camera stream
     const stopCameraStream = () => {
@@ -267,5 +266,45 @@ export default class NewPage {
         LoadingIndicator.hide();
       }
     });
+
+    const detectLocationBtn = document.getElementById("detect-location");
+
+    if (detectLocationBtn) {
+      detectLocationBtn.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          alert("Geolocation tidak didukung di browser ini.");
+          return;
+        }
+        detectLocationBtn.disabled = true;
+        detectLocationBtn.textContent = "Mendeteksi lokasi...";
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            selectedLocation = {
+              lat: parseFloat(latitude.toFixed(6)),
+              lng: parseFloat(longitude.toFixed(6)),
+            };
+            selectedLocationElement.textContent = `Selected: ${selectedLocation.lat}, ${selectedLocation.lng}`;
+            // Clear existing markers
+            if (this.#map) this.#map.clearMarkers();
+            // Add marker
+            this.#marker = this.#map.addMarker(
+              selectedLocation.lat,
+              selectedLocation.lng,
+              "Lokasi Anda"
+            );
+            // Set view ke lokasi user
+            this.#map.setView(selectedLocation.lat, selectedLocation.lng, 15);
+            detectLocationBtn.disabled = false;
+            detectLocationBtn.textContent = "Gunakan Lokasi Saya";
+          },
+          (error) => {
+            alert("Gagal mendapatkan lokasi: " + error.message);
+            detectLocationBtn.disabled = false;
+            detectLocationBtn.textContent = "Gunakan Lokasi Saya";
+          }
+        );
+      });
+    }
   }
 }

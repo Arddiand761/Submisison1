@@ -790,3 +790,34 @@ footer {
     display: none;
   }
 }
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
+  color: #fff;
+  border: none;
+  border-radius: 28px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0, 123, 255, 0.1);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  margin-top: 18px;
+  outline: none;
+}
+
+.submit-button:hover,
+.submit-button:focus {
+  background: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 24px rgba(0, 123, 255, 0.15);
+}
+
+.submit-button:active {
+  background: #0056b3;
+  transform: scale(0.98);
+}
