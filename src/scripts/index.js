@@ -11,9 +11,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (skipLink && mainContent) {
     skipLink.addEventListener("click", function (event) {
       event.preventDefault();
+      // Hilangkan fokus dari skip link
       skipLink.blur();
+      // Pastikan mainContent bisa di-focus
+      mainContent.setAttribute("tabindex", "-1");
       mainContent.focus();
-      mainContent.scrollIntoView();
+      mainContent.scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Agar skip-link hilang setelah focus pindah ke mainContent
+    mainContent.addEventListener("focus", function () {
+      skipLink.style.top = "-40px";
+    });
+    skipLink.addEventListener("blur", function () {
+      skipLink.style.top = "-40px";
     });
   }
 
