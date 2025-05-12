@@ -96,6 +96,9 @@ header {
 }
 .skip-link:focus {
   top: 0;
+  outline: 3px solid #222; /* Outline hitam tebal */
+  box-shadow: 0 0 0 4px #fff,
+    /* Putih di luar outline agar kontras */ 0 0 0 8px #222; /* Layer outline hitam lebih tebal */
 }
 
 .main-header {
@@ -709,6 +712,21 @@ header {
 .detail-button:active {
   background: #0056b3;
   transform: scale(0.98);
+}
+
+/* Tambahkan efek outline hitam saat transisi detail */
+.detail-content,
+.detail-image {
+  transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    outline 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detail-content.active-outline,
+.detail-image.active-outline {
+  outline: 3px solid #222;
+  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.08);
+  z-index: 2;
 }
 
 /* Footer Styles */
