@@ -84,19 +84,18 @@ header {
 
 .skip-link {
   position: absolute;
-  top: -40px;
+  top: -60px;
   left: 0;
   background: #007bff;
   color: #fff;
   padding: 8px 16px;
-  z-index: 100;
+  z-index: 2001;
   border-radius: 0 0 4px 4px;
   transition: top 0.3s;
   text-decoration: none;
 }
 .skip-link:focus {
-  top: 0;
-  outline: 3px solid #222; /* Outline hitam tebal */
+  top: 0;/* Outline hitam tebal */
   box-shadow: 0 0 0 4px #fff,
     /* Putih di luar outline agar kontras */ 0 0 0 8px #222; /* Layer outline hitam lebih tebal */
 }
