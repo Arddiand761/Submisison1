@@ -1,4 +1,4 @@
-import CONFIG from '../config';
+import CONFIG from "../config";
 
 const API_ENDPOINTS = {
   REGISTER: `${CONFIG.BASE_URL}/register`,
@@ -9,8 +9,8 @@ const API_ENDPOINTS = {
 };
 
 async function fetchWithAuth(url, options = {}) {
-  const token = localStorage.getItem('authToken');
-  
+  const token = localStorage.getItem("authToken");
+
   // Don't set Content-Type for FormData, let the browser handle it
   const headers = {
     ...options.headers,
@@ -28,18 +28,17 @@ async function fetchWithAuth(url, options = {}) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    throw new Error(responseJson.message || 'Something went wrong');
+    throw new Error(responseJson.message || "Something went wrong");
   }
 
   return responseJson;
 }
 
-
 export async function register({ name, email, password }) {
   const response = await fetch(`${CONFIG.BASE_URL}/register`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ name, email, password }),
   });
@@ -47,7 +46,7 @@ export async function register({ name, email, password }) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    throw new Error(responseJson.message || 'Registration failed');
+    throw new Error(responseJson.message || "Registration failed");
   }
 
   return responseJson;
@@ -55,11 +54,11 @@ export async function register({ name, email, password }) {
 
 export async function login({ email, password }) {
   const headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   };
 
   const response = await fetch(API_ENDPOINTS.LOGIN, {
-    method: 'POST',
+    method: "POST",
     headers,
     body: JSON.stringify({ email, password }),
   });
@@ -67,12 +66,12 @@ export async function login({ email, password }) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    throw new Error(responseJson.message || 'Login failed');
+    throw new Error(responseJson.message || "Login failed");
   }
 
   // Save token if login successful
   if (responseJson.loginResult?.token) {
-    localStorage.setItem('authToken', responseJson.loginResult.token);
+    localStorage.setItem("authToken", responseJson.loginResult.token);
   }
 
   return responseJson;
@@ -98,32 +97,37 @@ export async function getAllStories() {
 
 export async function createStory({ description, photo, lat, lon }) {
   const formData = new FormData();
-  formData.append('description', description);
+  formData.append("description", description);
   if (photo) {
     // Jika photo hasil kamera (Blob), tambahkan nama file
-    const fileName = photo.name || 'photo.jpg';
-    formData.append('photo', photo, fileName);
+    const fileName = photo.name || "photo.jpg";
+    formData.append("photo", photo, fileName);
   }
   if (lat && lon) {
-    formData.append('lat', lat.toString());
-    formData.append('lon', lon.toString());
+    formData.append("lat", lat.toString());
+    formData.append("lon", lon.toString());
   }
 
   const response = await fetch(`${CONFIG.BASE_URL}/stories`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
     },
     body: formData,
   });
 
   const responseJson = await response.json();
-  if (!response.ok) throw new Error(responseJson.message || 'Failed to create story');
+  if (!response.ok)
+    throw new Error(responseJson.message || "Failed to create story");
   return responseJson;
 }
 export async function getStoryDetail(id) {
   const response = await fetchWithAuth(`${API_ENDPOINTS.GET_STORY_DETAIL(id)}`);
   return response;
 }
-
-
+export async function getVapidPublicKey() {
+  const response = await fetch(`${CONFIG.BASE_URL}/push/vapid`);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || "Failed to get VAPID key");
+  return data.vapidPublicKey;
+}

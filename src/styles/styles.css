@@ -531,102 +531,203 @@ header {
 .main-content {
   padding-block: 20px;
 }
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 25px; /* Sedikit menambah jarak antar card */
   justify-content: center;
   margin-top: 20px;
 }
 
 .card {
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0; /* Warna border sedikit lebih lembut */
+  border-radius: 12px; /* Border radius lebih besar untuk tampilan lebih modern */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); /* Shadow lebih halus dan menyebar */
   overflow: hidden;
   width: 300px;
   text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transisi untuk hover */
+  cursor: pointer; /* Menunjukkan card bisa di-klik */
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02); /* Efek mengangkat dan sedikit membesar saat hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12); /* Shadow lebih menonjol saat hover */
 }
 
 .card-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  transition: transform 0.3s ease-in-out; /* Transisi untuk zoom gambar */
+}
+
+.card:hover .card-image {
+  transform: scale(1.05); /* Efek zoom pada gambar saat card di-hover */
 }
 
 .card-content {
-  padding: 15px;
+  padding: 20px; /* Padding sedikit lebih besar */
 }
 
 .card-title {
-  font-size: 1.5rem;
-  margin: 10px 0;
+  font-size: 1.6rem; /* Ukuran font sedikit lebih besar */
+  margin: 10px 0 15px; /* Margin bawah lebih besar */
+  color: #333; /* Warna font lebih gelap untuk kontras */
+  transition: color 0.3s ease;
+}
+
+.card:hover .card-title {
+  color: #007bff; /* Ubah warna title saat hover (contoh: biru) */
 }
 
 .card-description {
   font-size: 1rem;
-  color: #666;
+  color: #555; /* Warna sedikit lebih gelap untuk keterbacaan */
+  line-height: 1.6; /* Spasi antar baris untuk kenyamanan membaca */
 }
 
 .error-message {
-  color: red;
+  color: #d9534f; /* Warna merah yang lebih standar untuk error */
   text-align: center;
   font-size: 1.2rem;
+  padding: 15px;
+  background-color: #f8d7da; /* Latar belakang untuk pesan error */
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
 }
 
 .card-location {
-  font-size: 0.9rem;
-  color: #555;
-  margin-top: 10px;
+  font-size: 0.95rem; /* Sedikit lebih besar */
+  color: #666;
+  margin-top: 15px; /* Margin atas lebih besar */
   display: flex;
   align-items: center;
+  justify-content: center; /* Agar ikon dan teks di tengah */
+  transition: color 0.3s ease;
 }
 
 .card-location::before {
   content: "📍";
-  margin-right: 5px;
+  margin-right: 8px; /* Jarak ikon lebih besar */
+  font-size: 1.1em; /* Ukuran ikon sedikit lebih besar */
 }
 
+.card:hover .card-location {
+  color: #28a745; /* Ubah warna lokasi saat hover (contoh: hijau) */
+}
+
+/* Styling untuk Detail Story */
 .story-detail {
   margin-bottom: 2rem;
+  background-color: #f9f9f9; /* Latar belakang lembut untuk section detail */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
 }
 
 .detail-image {
   width: 100%;
-  max-height: 400px;
+  max-height: 450px; /* Tinggi maksimal gambar sedikit lebih besar */
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  border-radius: 10px; /* Border radius lebih halus */
+  margin-bottom: 1.5rem; /* Margin bawah lebih besar */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow halus untuk gambar */
 }
 
 .detail-content {
-  padding: 1rem;
+  padding: 1rem 0; /* Menghilangkan padding horizontal jika sudah diatur di .story-detail */
+}
+
+.detail-title { /* Menambahkan class untuk judul di halaman detail jika ada */
+  font-size: 2.2rem;
+  color: #222;
+  margin-bottom: 1rem;
+  text-align: center; /* Judul di tengah */
+}
+
+.detail-text { /* Menambahkan class untuk teks deskripsi di halaman detail */
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #444;
+  text-align: justify; /* Teks rata kiri-kanan */
+  margin-bottom: 1.5rem;
 }
 
 .map-container {
   width: 100%;
   height: 400px;
-  margin: 1rem 0;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  margin: 1.5rem 0; /* Margin atas bawah lebih besar */
+  border-radius: 10px;
+  border: 1px solid #ccc; /* Border map lebih jelas */
+  overflow: hidden; /* Memastikan map tidak keluar dari border radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow halus untuk map */
 }
 
 .detail-location {
-  margin-top: 1rem;
-  color: #666;
+  margin-top: 1.5rem;
+  color: #555;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Lokasi di tengah */
+}
+
+.detail-location::before {
+  content: "🗺️"; /* Ikon peta yang berbeda untuk detail */
+  margin-right: 10px;
+  font-size: 1.3em;
 }
 
 .map-popup {
-  max-width: 250px;
+  max-width: 280px; /* Lebar popup sedikit lebih besar */
+  padding: 10px;
+  font-family: 'Arial', sans-serif; /* Pastikan font konsisten */
 }
 
 .map-popup img {
   width: 100%;
-  height: 150px;
+  height: 160px; /* Tinggi gambar popup sedikit lebih besar */
   object-fit: cover;
-  border-radius: 4px;
-  margin: 0.5rem 0;
+  border-radius: 6px; /* Border radius lebih halus */
+  margin: 0.5rem 0 0.8rem; /* Penyesuaian margin */
+  border: 1px solid #eee; /* Border tipis pada gambar popup */
+}
+
+.map-popup-title { /* Class untuk judul dalam popup peta */
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.map-popup-description { /* Class untuk deskripsi dalam popup peta */
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Tambahan: Efek untuk Tombol (jika ada) */
+.button-interactive {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-interactive:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.button-interactive:active {
+  transform: translateY(0);
 }
 
 /*new page*/

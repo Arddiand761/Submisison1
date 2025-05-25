@@ -4,6 +4,45 @@ import "../styles/styles.css";
 import App from "./pages/app";
 import "leaflet/dist/leaflet.css";
 
+const VAPID_PUBLIC_KEY =
+  "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
+}
+
+async function subscribePush() {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    console.warn("Push messaging is not supported");
+    return;
+  }
+
+  try {
+    const reg = await navigator.serviceWorker.ready;
+
+    if (!reg.pushManager) {
+      console.warn('Push Manager not available on service worker registration.');
+      return;
+    }
+
+    const subscription = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+    });
+
+    console.log("Push notification subscribed successfully:", subscription);
+
+  } catch (err) {
+    console.error("Push notification subscription error:", err);
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   // Skip to Content
   const mainContent = document.querySelector("#main-content");
@@ -11,15 +50,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (skipLink && mainContent) {
     skipLink.addEventListener("click", function (event) {
       event.preventDefault();
-      // Hilangkan fokus dari skip link
       skipLink.blur();
-      // Pastikan mainContent bisa di-focus
       mainContent.setAttribute("tabindex", "-1");
       mainContent.focus();
       mainContent.scrollIntoView({ behavior: "smooth" });
     });
 
-    // Agar skip-link hilang setelah focus pindah ke mainContent
     mainContent.addEventListener("focus", function () {
       skipLink.style.top = "-40px";
     });
@@ -28,10 +64,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Cek login
+  // Cek login & subscribe push
   const token = localStorage.getItem("authToken");
   if (!token) {
     window.location.hash = "#/login";
+  } else {
+    subscribePush();
   }
 
   // Inisialisasi App

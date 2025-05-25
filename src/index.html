@@ -21,7 +21,12 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
     <link rel="stylesheet" href="./styles/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#007bff" />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to Content</a>
@@ -33,6 +38,7 @@
             src="images/logo.png"
             alt="Logo"
             class="logo"
+            onerror="this.onerror=null;this.src='/images/fallback.png';"
           />
           <span class="brand-name">JourDay</span>
         </a>
@@ -51,11 +57,15 @@
           </ul>
         </nav>
 
-        <button id="drawer-button" class="drawer-button " >☰</button>
+        <button id="drawer-button" class="drawer-button">☰</button>
       </div>
     </header>
 
-    <main id="main-content" class="main-content page-transition show" tabindex="-1"></main>
+    <main
+      id="main-content"
+      class="main-content page-transition show"
+      tabindex="-1"
+    ></main>
 
     <footer>
       <div class="footer-container">
