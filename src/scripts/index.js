@@ -6,10 +6,6 @@ import "leaflet/dist/leaflet.css";
 import { registerSW } from "virtual:pwa-register";
 import CONFIG from "./config";
 
-// VAPID Public Key
-const VAPID_PUBLIC_KEY =
-  "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
-
 const updateSW = registerSW({
   onNeedRefresh() {
     if (confirm("Ada pembaruan tersedia. Muat ulang sekarang?")) {
@@ -27,11 +23,11 @@ function urlBase64ToUint8Array(base64String) {
     .replace(/\-/g, "+")
     .replace(/_/g, "/");
   const rawData = window.atob(base64);
-  return new Uint8Array(rawData.split('').map((char) => char.charCodeAt(0)));
-  // for (let i = 0; i < rawData.length; ++i) {
-  //   outputArray[i] = rawData.charCodeAt(i);
-  // }
-  // return outputArray;
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
 
 function requestNotificationPermission() {
@@ -76,11 +72,13 @@ export async function subscribeToPushNotifications(subscription) {
       },
       body: JSON.stringify({
         endpoint: subscriptionJson.endpoint,
-        keys: subscriptionJson.keys, // Corrected line
+        keys: subscriptionJson.keys,
         p256dh: subscriptionJson.keys.p256dh,
         auth: subscriptionJson.keys.auth,
       }),
     });
+
+    console.log("Berhasil berlangganan push notification:", subscriptionJson.endpoint);
 
     const responseJson = await response.json();
 
@@ -132,58 +130,77 @@ export async function unsubscribeFromPushNotifications(endpoint) {
 }
 
 async function subscribePush(registration) {
-  // Menerima swRegistration sebagai argumen
-  if (!("PushManager" in window)) {
-    console.warn("Push Manager tidak didukung oleh browser ini.");
-    throw new Error("Push Manager not supported");
-  }
+  if (!("PushManager" in window)) return;
 
-  let currentSubscription = await registration.pushManager.getSubscription();
+  const VAPID_PUBLIC_KEY =
+    "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
 
-  if (currentSubscription) {
-    console.log(
-      "Pengguna sudah berlangganan (dari subscribePush):",
-      currentSubscription.endpoint
-    );
-
-    try {
-      await subscribeToPushNotifications(currentSubscription); // Pastikan fungsi ini tersedia
-    } catch (error) {
-      console.error(
-        "Gagal mengirim ulang langganan yang sudah ada ke server:",
-        error
-      );
-      // Tidak perlu throw error di sini agar tidak menghentikan alur jika hanya re-sync
-    }
-    return currentSubscription;
-  }
-
-  // Jika belum ada langganan, buat yang baru
   try {
-    currentSubscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true, // Wajib: menandakan semua push akan terlihat oleh pengguna
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY), // Pastikan VAPID_PUBLIC_KEY dan urlBase64ToUint8Array tersedia
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
     });
-    console.log(
-      "Berhasil berlangganan push (dari subscribePush):",
-      currentSubscription.endpoint
-    );
-
-    // Kirim objek langganan baru ke server
-    await subscribeToPushNotifications(currentSubscription); // Pastikan fungsi ini tersedia
-    console.log("Langganan baru berhasil dikirim ke server.");
-    return currentSubscription;
-  } catch (error) {
-    console.error("Gagal berlangganan push (dari subscribePush):", error);
-    if (Notification.permission === "denied") {
-      console.warn(
-        "Izin notifikasi ditolak oleh pengguna. Tidak bisa berlangganan."
-      );
-      // Pertimbangkan untuk memberi tahu pengguna cara mengaktifkan izin secara manual.
-    }
-    // Lemparkan error agar bisa ditangani oleh pemanggil jika diperlukan
-    throw error;
+    console.log("Push Subscription:", subscription);
+    // Kirim subscription ke server API kamu di sini jika perlu
+  } catch (err) {
+    console.error("Push subscription failed:", err);
   }
+
+  // // VAPID Public Key
+  // const VAPID_PUBLIC_KEY =
+  //  "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
+  //   // Menerima swRegistration sebagai argumen
+  //   if (!("PushManager" in window)) {
+  //     console.warn("Push Manager tidak didukung oleh browser ini.");
+  //     throw new Error("Push Manager not supported");
+  //   }
+
+  //   let currentSubscription = await registration.pushManager.getSubscription();
+
+  //   if (currentSubscription) {
+  //     console.log(
+  //       "Pengguna sudah berlangganan (dari subscribePush):",
+  //       currentSubscription.endpoint
+  //     );
+
+  //     try {
+  //       await subscribeToPushNotifications(currentSubscription); // Pastikan fungsi ini tersedia
+  //     } catch (error) {
+  //       console.error(
+  //         "Gagal mengirim ulang langganan yang sudah ada ke server:",
+  //         error
+  //       );
+  //       // Tidak perlu throw error di sini agar tidak menghentikan alur jika hanya re-sync
+  //     }
+  //     return currentSubscription;
+  //   }
+
+  //   // Jika belum ada langganan, buat yang baru
+  //   try {
+  //     currentSubscription = await registration.pushManager.subscribe({
+  //       userVisibleOnly: true, // Wajib: menandakan semua push akan terlihat oleh pengguna
+  //       applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY), // Pastikan VAPID_PUBLIC_KEY dan urlBase64ToUint8Array tersedia
+  //     });
+  //     console.log(
+  //       "Berhasil berlangganan push (dari subscribePush):",
+  //       currentSubscription.endpoint
+  //     );
+
+  //     // Kirim objek langganan baru ke server
+  //     await subscribeToPushNotifications(currentSubscription); // Pastikan fungsi ini tersedia
+  //     console.log("Langganan baru berhasil dikirim ke server.");
+  //     return currentSubscription;
+  //   } catch (error) {
+  //     console.error("Gagal berlangganan push (dari subscribePush):", error);
+  //     if (Notification.permission === "denied") {
+  //       console.warn(
+  //         "Izin notifikasi ditolak oleh pengguna. Tidak bisa berlangganan."
+  //       );
+  //       // Pertimbangkan untuk memberi tahu pengguna cara mengaktifkan izin secara manual.
+  //     }
+  //     // Lemparkan error agar bisa ditangani oleh pemanggil jika diperlukan
+  //     throw error;
+  //   }
 }
 
 // main.js
