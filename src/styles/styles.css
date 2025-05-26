@@ -95,7 +95,7 @@ header {
   text-decoration: none;
 }
 .skip-link:focus {
-  top: 0;/* Outline hitam tebal */
+  top: 0; /* Outline hitam tebal */
   box-shadow: 0 0 0 4px #fff,
     /* Putih di luar outline agar kontras */ 0 0 0 8px #222; /* Layer outline hitam lebih tebal */
 }
@@ -641,14 +641,16 @@ header {
   padding: 1rem 0; /* Menghilangkan padding horizontal jika sudah diatur di .story-detail */
 }
 
-.detail-title { /* Menambahkan class untuk judul di halaman detail jika ada */
+.detail-title {
+  /* Menambahkan class untuk judul di halaman detail jika ada */
   font-size: 2.2rem;
   color: #222;
   margin-bottom: 1rem;
   text-align: center; /* Judul di tengah */
 }
 
-.detail-text { /* Menambahkan class untuk teks deskripsi di halaman detail */
+.detail-text {
+  /* Menambahkan class untuk teks deskripsi di halaman detail */
   font-size: 1.1rem;
   line-height: 1.7;
   color: #444;
@@ -684,7 +686,7 @@ header {
 .map-popup {
   max-width: 280px; /* Lebar popup sedikit lebih besar */
   padding: 10px;
-  font-family: 'Arial', sans-serif; /* Pastikan font konsisten */
+  font-family: "Arial", sans-serif; /* Pastikan font konsisten */
 }
 
 .map-popup img {
@@ -696,14 +698,16 @@ header {
   border: 1px solid #eee; /* Border tipis pada gambar popup */
 }
 
-.map-popup-title { /* Class untuk judul dalam popup peta */
+.map-popup-title {
+  /* Class untuk judul dalam popup peta */
   font-size: 1.1rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 5px;
 }
 
-.map-popup-description { /* Class untuk deskripsi dalam popup peta */
+.map-popup-description {
+  /* Class untuk deskripsi dalam popup peta */
   font-size: 0.9rem;
   color: #666;
 }
@@ -920,4 +924,166 @@ footer {
 .submit-button:active {
   background: #0056b3;
   transform: scale(0.98);
+}
+
+.bookmark-btn {
+  background-color: #fffbe6;
+  color: #e6b800;
+  border: 2px solid #e6b800;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  box-shadow: 0 2px 8px rgba(230, 184, 0, 0.08);
+  outline: none;
+}
+
+.bookmark-btn:hover,
+.bookmark-btn:focus {
+  background-color: #e6b800;
+  color: #fffbe6;
+  border-color: #e6b800;
+}
+
+/* Bookmark Page Styles - Tambahkan di bawah file CSS yang ada */
+
+.bookmark-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.bookmark-item {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookmark-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.bookmark-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.bookmark-item:hover .bookmark-image {
+  transform: scale(1.05);
+}
+
+.bookmark-info {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookmark-info h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.bookmark-info p {
+  margin: 0 0 16px 0;
+  color: #666;
+  line-height: 1.6;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.view-btn {
+  flex: 1;
+  padding: 10px 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.25);
+}
+
+.remove-bookmark-btn {
+  flex: 1;
+  padding: 10px 0;
+  background-color: #fff;
+  color: #ff4c4c;
+  border: 2px solid #ff4c4c;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.remove-bookmark-btn:hover {
+  background-color: #ff4c4c;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 76, 76, 0.25);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #dee2e6;
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.error-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #fff3f3;
+  border-radius: 12px;
+  border: 2px solid #ffdddd;
+  color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+  .bookmark-list {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
 }

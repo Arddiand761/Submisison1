@@ -20,7 +20,7 @@ registerRoute(
     cacheName: "api-dicoding-cache",
     plugins: [
       new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 24 * 60 * 60 }), 
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 24 * 60 * 60 }),
     ],
   })
 );
@@ -40,17 +40,48 @@ registerRoute(
 );
 
 self.addEventListener("push", function (event) {
-  const data = event.data ? event.data.json() : {};
-  const title = data.title || "Notifikasi Baru";
-  const options = {
-    body: data.body || "Anda memiliki notifikasi baru.",
-    icon: data.icon || "/logo192.png",
-    badge: data.badge || "/logo192.png",
-    data: {
-      url: data.url || "/",
-    },
+  let notificationData = {
+    title: "Notifikasi Baru",
+    body: "Anda memiliki notifikasi baru.",
+    icon: "/images/icons/icon-x192.png",
+    badge: "/images/favicon.png",
+    url: "/",
   };
-  event.waitUntil(self.registration.showNotification(title, options));
+
+  // Coba parse data sebagai JSON, tapi tangani jika bukan JSON
+  if (event.data) {
+    try {
+      const jsonData = event.data.json();
+      // Gunakan data JSON jika berhasil di-parse
+      notificationData = {
+        title: jsonData.title || notificationData.title,
+        body: jsonData.body || notificationData.body,
+        icon: jsonData.icon || notificationData.icon,
+        badge: jsonData.badge || notificationData.badge,
+        url: jsonData.url || notificationData.url,
+      };
+    } catch (error) {
+      // Jika parsing JSON gagal, gunakan data sebagai text biasa
+      console.warn(
+        "Push message tidak dalam format JSON, menggunakan sebagai teks:",
+        error
+      );
+      const textData = event.data.text();
+      notificationData.body = textData;
+    }
+  }
+
+  // Tampilkan notifikasi dengan data yang sudah disiapkan
+  event.waitUntil(
+    self.registration.showNotification(notificationData.title, {
+      body: notificationData.body,
+      icon: notificationData.icon,
+      badge: notificationData.badge,
+      data: {
+        url: notificationData.url,
+      },
+    })
+  );
 });
 
 self.addEventListener("notificationclick", function (event) {

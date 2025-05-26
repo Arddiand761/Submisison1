@@ -131,3 +131,80 @@ export async function getVapidPublicKey() {
   if (!response.ok) throw new Error(data.message || "Failed to get VAPID key");
   return data.vapidPublicKey;
 }
+
+// Add these functions to your api.js file
+
+// export async function subscribeToPushNotifications(subscription) {
+//   const token = localStorage.getItem("authToken");
+//   if (!token) {
+//     throw new Error("Token autentikasi tidak ditemukan");
+//   }
+
+//   // Pastikan subscriptionJson adalah hasil .toJSON()
+//   const subscriptionJson = subscription.toJSON
+//     ? subscription.toJSON()
+//     : subscription;
+
+//   try {
+//     const response = await fetch(`${CONFIG.BASE_URL}/notifications/subscribe`, {
+//       method: "POST",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         endpoint: subscriptionJson.endpoint,
+//         keys: JSON.stringify(subscriptionJson.keys),
+//         p256dh: subscriptionJson.keys.p256dh,
+//         auth: subscriptionJson.keys.auth,
+//       }),
+//     });
+
+//     const responseJson = await response.json();
+
+//     if (!response.ok) {
+//       throw new Error(
+//         responseJson.message || "Gagal berlangganan push notification"
+//       );
+//     }
+
+//     return responseJson;
+//   } catch (error) {
+//     console.error("Error di subscribeToPushNotifications:", error);
+//     throw error;
+//   }
+// }
+
+// export async function unsubscribeFromPushNotifications(endpoint) {
+//   const token = localStorage.getItem("authToken");
+//   if (!token) {
+//     throw new Error("Token autentikasi tidak ditemukan");
+//   }
+
+//   try {
+//     // Menggunakan path yang benar sesuai dokumentasi API Dicoding
+//     const response = await fetch(`${CONFIG.BASE_URL}/notifications/subscribe`, {
+//       method: "DELETE",
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         endpoint: endpoint,
+//       }),
+//     });
+
+//     const responseJson = await response.json();
+
+//     if (!response.ok) {
+//       throw new Error(
+//         responseJson.message || "Gagal berhenti berlangganan push notification"
+//       );
+//     }
+
+//     return responseJson;
+//   } catch (error) {
+//     console.error("Error di unsubscribeFromPushNotifications:", error);
+//     throw error;
+//   }
+// }
